@@ -1,7 +1,7 @@
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
-from jose import jwt, JWTError
-from decouple import config  # Importa o config do python-decouple
+from jose import jwt
+from decouple import config  
 
 # Carrega as variáveis do arquivo .env
 SECRET_KEY = config("SECRET_KEY")
