@@ -5,7 +5,7 @@ Este projeto tem como objetivo oferecer um ambiente interativo onde os usuários
 
 ---
 
-## 🛠 Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 - **Backend**: FastAPI (Python)  
 - **Banco de Dados**: SQLite  
@@ -16,7 +16,7 @@ Este projeto tem como objetivo oferecer um ambiente interativo onde os usuários
 
 ---
 
-## 📌 Descrição 
+## Descrição 
 
 O **BrainBoost** permite que os usuários:
 
@@ -28,7 +28,7 @@ O **BrainBoost** permite que os usuários:
 
 ---
 
-## 🏗 Estrutura
+## Estrutura
 
 O projeto está dividido em três partes principais:
 
