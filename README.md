@@ -1,4 +1,5 @@
 # BrainBoost
+![Logo](https://github.com/tassandro/brainboost/blob/main/9240330-68f477fe%20(1).png)
 
 Bem-vindo ao **BrainBoost** - uma plataforma inovadora para aprendizado dinâmico!  
 Este projeto tem como objetivo oferecer um ambiente interativo onde os usuários podem acessar resumos automáticos de vídeos educacionais e responder a quizzes gerados com base no conteúdo assistido.
