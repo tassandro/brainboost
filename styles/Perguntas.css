@@ -1,0 +1,141 @@
+/* Página ocupa 100% da altura */
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background-color: #ffffff;
+    background-image: radial-gradient(circle, rgba(0, 0, 0, 0.2) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-repeat: repeat;
+    background-attachment: fixed;
+  }
+  
+  /* Header fixo no topo */
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    padding: 16px 200px 5px 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    z-index: 1000;
+  }
+  
+  /* Logo com imagem e texto */
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .header-icon {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .logo a {
+    font-size: 24px;
+    font-weight: 700;
+    color: #222;
+    margin: 0;
+    text-decoration: none;
+  }
+  
+  /* Botão login */
+  .login-btn {
+    padding: 10px 24px;
+    background-color: #55745e;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    margin-right: px;
+  }
+  
+  .login-btn:hover {
+    background-color: #46624f;
+  }
+  
+  /* Wrapper principal */
+  main {
+    margin-top: 100px; /* espaço para o header fixo */
+    display: flex;
+    justify-content: center;
+  }
+  
+  /* Container principal */
+  .container {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    width: 600px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Pergunta com fundo verde claro */
+  .pergunta {
+    background-color: #d1fadf;
+    padding: 16px;
+    border-radius: 10px;
+    font-size: 18px;
+    margin-bottom: 24px;
+  }
+  
+  /* Alternativas como botões */
+  .respostas {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .r-button {
+    text-align: left;
+    padding: 16px;
+    border-radius: 10px;
+    border: 1px solid #e0e1e4;
+    background-color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .r-button:hover {
+    background-color: #f2f2f2;
+  }
+  
+  /* Barra de navegação no final */
+  .navegacao {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 32px;
+  }
+  
+  /* Botões de navegação */
+  .nav-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: 1.5px solid #555;
+    border-radius: 12px;
+    background-color: #f8fdf9;
+    cursor: pointer;
+    box-shadow: 2px 2px 0px #aaa;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .nav-button:hover {
+    background-color: #eef8f1;
+    box-shadow: 2px 2px 3px #888;
+  }
+  
+  .nav-button:active {
+    transform: scale(0.97);
+  }
+  
