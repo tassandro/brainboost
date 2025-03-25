@@ -66,6 +66,7 @@
   .logo a {
     color: rgb(25, 25, 25);
     text-decoration: none;
+    padding-left: 10px;
   }
   .login-btn {
     background-color: #537459;
@@ -94,6 +95,7 @@
     background-position: center;
     color: #fff;
     padding: 2rem 0;
+    background-color: #537459;
   }
   .hero-grid {
     display: flex;
@@ -115,13 +117,13 @@
   .hero-content {
 
     flex: 1 1 60%;
-    color: #333;
+    color: #fff;
     padding: 2rem;
   }
   .hero-content h5 {
     margin-bottom: 1rem;
     font-weight: 400;
-    color: #333;
+    color: #fff;
   }
   .hero-content h1 {
     margin-bottom: 1rem;

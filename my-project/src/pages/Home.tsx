@@ -1,7 +1,7 @@
 import BrainIco from '../images/ico/BrainIco.png';
 import img1 from '../images/img1.jpeg';
 import bgGreen from '../images/Background-green.jpg';
-import CheckIco from '../images/ico/CheckIco2.svg';
+import CheckIco from '../images/ico/CheckIco.svg';
 import BookIco from '../images/ico/BookIco.png';
 import BookPcIco from '../images/ico/BookPcIco.png';
 import PcIco from '../images/ico/PcIco.png';
@@ -74,8 +74,7 @@ export default function Home() {
           <div className="hero-content">
             <h5>O que nós fazemos</h5>
             <h1>Resumos concisos de vídeo aulas do YouTube e questões interativas.</h1>
-            <p>
-              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+            <p>              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
               dolore eu fugiat nulla pariatur.
             </p>
 
@@ -150,15 +149,15 @@ export default function Home() {
             <ul className="strategy-list">
               <li>
                 <h3>01. Resumos automáticos de videoaulas do YouTube</h3>
-                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <p>Utilizamos algoritmos de processamento de linguagem natural (NLP) para transformar videoaulas longas em resumos objetivos e organizados, economizando tempo e facilitando a revisão. O estudante pode colar o link de um vídeo e obter rapidamente uma síntese dos principais tópicos abordados.</p>
               </li>
               <li>
                 <h3>02. Criação de questões personalizadas para revisão</h3>
-                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <p>Com base no conteúdo dos vídeos, nosso sistema gera automaticamente questões de múltipla escolha para reforçar o aprendizado. Isso ajuda na fixação do conteúdo, testando a compreensão do estudante de forma ativa e personalizada.</p>
               </li>
               <li>
                 <h3>03. Ferramenta voltada para estudantes</h3>
-                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <p>Nossa plataforma é pensada especialmente para estudantes que buscam eficiência nos estudos. Seja no ensino médio, graduação ou concursos, o Brainboost oferece uma experiência intuitiva, leve e produtiva, centralizando aprendizado, revisão e prática em um só lugar.</p>
               </li>
             </ul>
           </div>
