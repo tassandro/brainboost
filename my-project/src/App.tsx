@@ -5,17 +5,22 @@ import './styles/Home.css';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Questions from './pages/Questions';
+import { PrivateRoute } from './pages/Context/PrivateRoute';
+import { AuthProvider } from './pages/Context/AuthContext';
 
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/questions" element={<Questions />} />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/questions" element={<PrivateRoute><Questions /></PrivateRoute>}/>
+        </Routes>
+      </Router>
+    </AuthProvider>
+
   )
 }
 

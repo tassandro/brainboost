@@ -1,16 +1,33 @@
 import { FormEvent } from 'react';
 import styles from '../styles/Login.module.css';
+import { useAuth } from './Context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+
+
 
 export default function Login() {
+    const [userName, setUserName] = useState('');
+    const [password, setPassword] = useState('');
+
+    const { login } = useAuth();
+    const navigate = useNavigate();
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
-        const username = formData.get('username');
-        const password = formData.get('password');
+        setUserName(formData.get('username') as string);
+        setPassword(formData.get('password') as string);
 
-        console.log('Username:', username);
-        console.log('Password:', password);
+        // console.log('Username:', username);
+        // console.log('Password:', password);
         // Aqui você pode enviar os dados para o backend
+
+        if (userName === 'admin' && password === 'admin') {
+            login();
+            navigate('/');
+            setUserName('');
+            setPassword('');
+        }
     };
 
     const goBack = () => {

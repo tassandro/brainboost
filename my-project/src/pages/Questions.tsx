@@ -1,9 +1,17 @@
-import { Link } from 'react-router-dom';
 import styles from '../styles/Questions.module.css';
+import { useAuth } from './Context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 import BrainIco from '../images/ico/BrainIco.png';
 
 export default function Questions() {
+  const { isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
   return (
     <div className={styles.pageWrapper}>
       {/* Cabeçalho */}
@@ -18,7 +26,8 @@ export default function Questions() {
             <a href="/">Brainboost</a>
           </h1>
         </div>
-        <Link to="/" className={styles.loginBtn}>LOGIN</Link>
+        {isAuthenticated && <button onClick={handleLogout} className={styles.loginBtn}>Logout</button> }
+        
       </header>
 
       {/* Conteúdo principal */}

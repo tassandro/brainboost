@@ -19,6 +19,7 @@ import { Link } from 'react-router-dom';
 import UrlForm from './components/urlForm';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from './Context/AuthContext';
 
 export default function Home() {
   useEffect(() => {
@@ -40,12 +41,13 @@ export default function Home() {
   }, []);
 
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    console.log('isLoading mudou para:', isLoading);
-  }, [isLoading]);
-
   const navigate = useNavigate();
+  const { isAuthenticated, logout } = useAuth();
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
 
   //função assíncrona que submete a url como requisição post e quando ela retorna true, navega para a página de questões
   async function onSubmit(url: string) {
@@ -86,9 +88,8 @@ export default function Home() {
 
             </ul>
           </nav>
-
-          {/* <a href="login.html" className="btn login-btn">Login</a> */}
-          <Link to="/login" className="btn login-btn">Login</Link>
+          {!isAuthenticated ? <Link to="/login" className="btn login-btn">Login</Link> : <button onClick={handleLogout} className="btn login-btn">Logout</button>}
+          
         </div>
       </header>
 
