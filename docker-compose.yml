@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  fastapi:
+    build: .
+    container_name: brainboost
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    environment:
+      - DATABASE_URL=sqlite:///./test.db  # Caminho do banco SQLite
+    restart: always

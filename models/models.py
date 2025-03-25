@@ -48,9 +48,9 @@ class Question(Base):
     id_video = Column(String, ForeignKey("video.id_video"))
     texto_questao = Column(String, nullable=False)
     pontuacao = Column(Integer, default=0)
-    alternatives = Column(String)  # Agora é String, armazenaremos a lista como JSON string
-    
-    # Relacionamento com Video
+    alternatives = Column(String, nullable=False)  # Lista de alternativas armazenada como JSON
+    correct_answer = Column(String) 
+
     video = relationship("Video", back_populates="questions")
 
     @property

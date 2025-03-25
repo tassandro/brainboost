@@ -11,10 +11,13 @@ from schemas.video_schemas import VideoOut, QuestionResponse
 from models.database import get_db
 from dotenv import load_dotenv
 import os
-import json  # Importando o módulo json
+import json  
 import re
+import uuid
 
-# Carregar variáveis de ambiente do arquivo .env
+def generate_unique_id():
+    return uuid.uuid4().hex[:10]  # Gera um ID único de 10 caracteres
+
 load_dotenv()
 
 # Agora você pode acessar a variável de ambiente
@@ -41,7 +44,7 @@ def generate_openai_summary(transcript: str) -> str:
         model="gpt-3.5-turbo",  # Usando o modelo de conversação gpt-3.5-turbo
         messages=[ 
             {"role": "system", "content": "Você é um assistente especializado em resumir conteúdos educacionais."},
-            {"role": "user", "content": f"Explique o tema da aula de forma clara e objetiva, não fale nada sobre a aula em si, seja impessoal, divida a explicação em 5 parágrafos distintos.Não use numeração, listas ou marcadores.\n{transcript}"}
+            {"role": "user", "content": f"Explique o tema da aula de forma clara e objetiva, não fale nada sobre a aula em si, seja impessoal, divida a explicação em 5 parágrafos distintos. Não use numeração, listas ou marcadores.\n{transcript}"}
         ],
         max_tokens=200,  # Ajuste conforme necessário
         temperature=0.7  # Controle a criatividade do resumo
@@ -49,22 +52,19 @@ def generate_openai_summary(transcript: str) -> str:
 
     return response['choices'][0]['message']['content'].strip()
 
-def generate_openai_questions(transcript: str) -> List[dict]:
+def generate_openai_questions(transcript: str) -> list:
     try:
-        print("Iniciando chamada à API do OpenAI para gerar perguntas...")  # Iniciar rastreamento
-
-        # Chamada à API do OpenAI para gerar as perguntas
+        # Ajuste do prompt para gerar 10 perguntas
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[ 
-                {"role": "system", "content": "Você é um assistente que cria perguntas de múltipla escolha com alternativas numéricas ou texto explicativo."},
-                {"role": "user", "content": f"""Crie EXATAMENTE 10 perguntas sobre o vídeo, com alternativas numéricas (como 1, 2, 3, 4) ou baseadas em texto relevante, conforme o conteúdo do vídeo. Cada alternativa deve estar relacionada ao vídeo. Mas você não deve fazer menção nenhuma ao vídeo em nenhuma pergunta, apenas ao tema dele.
+                {"role": "system", "content": "Você é um assistente que cria perguntas de múltipla escolha e indica a alternativa correta."},
+                {"role": "user", "content": f"""Crie EXATAMENTE 13perguntas sobre o conteúdo a seguir, com alternativas numeradas (1, 2, 3, 4) e marque a resposta correta com um asterisco (*). Tome o tempo que precisar e não mencione o vídeo nas perguntas, apenas o tema ao qual o vídeo se
 
-Exemplo de formato:
-P: Qual é o resultado da divisão de 15 por 5?
-Alternativas:
+Exemplo de formato esperado:
+P: Qual é o resultado de 15 dividido por 5?
 1) 2
-2) 3
+2) 3 *
 3) 4
 4) O método para dividir números grandes
 
@@ -74,85 +74,99 @@ Conteúdo do vídeo: {transcript}"""}
             max_tokens=2000
         )
 
-        print("Resposta da API recebida:", response)  # Exibe a resposta completa da API
-
-        # Verificar se a resposta contém perguntas
-        if 'choices' not in response or len(response['choices']) == 0:
-            print("Resposta da API não contém escolhas válidas.")  # Informar se não encontrou a chave 'choices'
-            return []
-
         content = response['choices'][0]['message']['content']
-        print("Conteúdo extraído da resposta:", content)  # Exibe o conteúdo extraído
-
-        if not content:
-            print("Conteúdo vazio na resposta!")  # Verifica se o conteúdo é vazio
-            return []
-
-        questions = []
+        
+        questions_data = []
         current_question = None
-
+        
+        # Processa o conteúdo retornado para identificar perguntas e alternativas
         for line in content.split('\n'):
             line = line.strip()
-            if line.startswith('P:'):
-                if current_question and len(current_question['alternatives']) == 4:
-                    questions.append(current_question)
-                question_text = line[2:].strip()
+            
+            # Identifica uma nova pergunta
+            if line.startswith("P:"):
+                # Se já temos uma pergunta em processamento, adiciona ao resultado
+                if current_question and current_question['alternatives'] and current_question['correct_answer']:
+                    questions_data.append(current_question)
+                
+                # Inicia nova pergunta
                 current_question = {
-                    'question_text': question_text,
-                    'score': 0,
-                    'alternatives': []
+                    'texto_questao': line[2:].strip(),  # Remove o "P:"
+                    'alternatives': [],
+                    'correct_answer': ''
                 }
-            elif line.startswith(('1)', '2)', '3)', '4)')) and current_question:
-                alternative_text = re.sub(r'^\d\)\s*', '', line).strip()  # Limpa a numeração (1), (2), etc.
-                current_question['alternatives'].append(alternative_text)
-
-        # Adiciona a última pergunta se estiver completa
-        if current_question and len(current_question['alternatives']) == 4:
-            questions.append(current_question)
+            
+            # Identifica alternativas (1), 2), etc.)
+            elif line.startswith(('1)', '2)', '3)', '4)')):
+                if not current_question:
+                    continue
+                    
+                # Separa o número da alternativa do texto
+                parts = line.split(')', 1)
+                if len(parts) < 2:
+                    continue
+                    
+                alternative_text = parts[1].strip()
+                is_correct = '*' in alternative_text
+                
+                # Remove o asterisco se existir
+                clean_text = alternative_text.replace('*', '').strip()
+                
+                current_question['alternatives'].append(clean_text)
+                
+                # Se for a resposta correta, guarda o texto limpo
+                if is_correct:
+                    current_question['correct_answer'] = clean_text
         
-        print("Perguntas extraídas:", questions)  # Exibe as perguntas extraídas
-        return questions[:10]  # Garante no máximo 10 perguntas
+        # Adiciona a última pergunta processada, se válida
+        if current_question and current_question['alternatives'] and current_question['correct_answer']:
+            questions_data.append(current_question)
+        
+        # Garante que temos exatamente 10 perguntas
+        if len(questions_data) < 10:
+            print(f"Aviso: Geradas apenas {len(questions_data)} perguntas.")
+        
+        # Limita a 10 perguntas
+        questions_data = questions_data[:10]
+        
+        
+        return questions_data
 
     except Exception as e:
-        print(f"Erro ao gerar perguntas: {e}")
+        print("Erro ao gerar perguntas:", e)
         return []
+
 
 async def save_video_and_questions(db: Session, video_link: str, video_summary: str, transcript: str, questions: List[dict]):
     try:
-        existing_video = db.query(Video).filter(Video.link_video == video_link).first()
-
-        if not existing_video:
-            video = Video(link_video=video_link, lyrics_video=transcript, resumo_video=video_summary)
-            db.add(video)
-            db.commit()
-            db.refresh(video)
-        else:
-            existing_video.lyrics_video = transcript
-            existing_video.resumo_video = video_summary
-            db.commit()
-            db.refresh(existing_video)
-            video = existing_video
+        video_id = generate_unique_id()
+        video = Video(
+            id_video=video_id,
+            link_video=video_link,
+            resumo_video=video_summary,
+            lyrics_video=transcript,  # Alterado para 'lyrics_video' ou 'transcript_video'
+        )
+        db.add(video)
+        db.commit()
 
         for question_data in questions:
-            if (not question_data.get('question_text') or 
-                not isinstance(question_data.get('alternatives'), list) or 
-                len(question_data['alternatives']) != 4):
-                continue  
+            if not question_data.get('texto_questao') or len(question_data.get('alternatives', [])) != 4:
+                print(f"Pergunta inválida ignorada: {question_data.get('texto_questao')}")
+                continue
 
             question = Question(
                 id_video=video.id_video,
-                texto_questao=question_data['question_text'],
+                texto_questao=question_data['texto_questao'],
                 pontuacao=0,
-                alternatives=json.dumps(question_data['alternatives'])
+                alternatives=json.dumps(question_data['alternatives']),
+                correct_answer=question_data['correct_answer']
             )
             db.add(question)
 
         db.commit()
-        
-        # Agora, garantimos que as perguntas são carregadas corretamente
-        video = db.query(Video).options(joinedload(Video.questions)).filter(Video.id_video == video.id_video).first()
-        
         return video
+
     except Exception as e:
-        print(f"Erro ao salvar o vídeo e perguntas: {e}")
-        raise HTTPException(status_code=500, detail="Erro ao salvar vídeo e perguntas")
+        db.rollback()
+        print(f"Erro ao salvar vídeo e perguntas: {str(e)}")
+        raise HTTPException(status_code=500, detail="Erro interno ao salvar dados")

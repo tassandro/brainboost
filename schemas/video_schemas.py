@@ -12,6 +12,7 @@ class QuestionResponse(BaseModel):
     texto_questao: str
     pontuacao: int
     alternatives: List[str] = []  # Valor padrão: lista vazia
+    correct_answer: str
 
     @field_validator('alternatives')
     def validate_alternatives(cls, v):
