@@ -6,4 +6,5 @@ python-jose
 python-multipart
 python-decouple
 nanoid
-"fastapi[standard]"
+youtube_transcript_api
+openai==0.28

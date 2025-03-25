@@ -1,8 +1,9 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, JSON
 from sqlalchemy.orm import relationship
 from .database import Base
 from datetime import datetime
-from nanoid import generate 
+from nanoid import generate
+import json
 
 class User(Base):
     __tablename__ = "users"
@@ -19,7 +20,7 @@ class Video(Base):
     __tablename__ = "video"
     
     id_video = Column(String, primary_key=True, index=True, default=lambda: generate(size=10))  
-    link_video = Column(String, unique=True, nullable=False)
+    link_video = Column(String, nullable=False)
     lyrics_video = Column(String, nullable=False)
     resumo_video = Column(String, nullable=False)
     
@@ -47,6 +48,17 @@ class Question(Base):
     id_video = Column(String, ForeignKey("video.id_video"))
     texto_questao = Column(String, nullable=False)
     pontuacao = Column(Integer, default=0)
+    alternatives = Column(String)  # Agora é String, armazenaremos a lista como JSON string
     
     # Relacionamento com Video
     video = relationship("Video", back_populates="questions")
+
+    @property
+    def alternatives_list(self):
+        """Retorna as alternativas como lista de strings."""
+        return json.loads(self.alternatives) if self.alternatives else []
+
+    @alternatives_list.setter
+    def alternatives_list(self, value):
+        """Define as alternativas a partir de uma lista de strings."""
+        self.alternatives = json.dumps(value) if value else json.dumps([])
