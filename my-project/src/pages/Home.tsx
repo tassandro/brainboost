@@ -10,10 +10,15 @@ import img2 from '../images/img2.jpeg';
 import img3 from '../images/img3.jpeg';
 import img4 from '../images/img4.jpeg';
 import img5 from '../images/img5.jpeg';
+import waitUp from '../animations/waitup.gif';
 
 import { useEffect } from 'react';
 import ScrollReveal from 'scrollreveal';
 import { Link } from 'react-router-dom';
+
+import UrlForm from './components/urlForm';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
   useEffect(() => {
@@ -34,8 +39,31 @@ export default function Home() {
     });
   }, []);
 
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    console.log('isLoading mudou para:', isLoading);
+  }, [isLoading]);
+
+  const navigate = useNavigate();
+
+  //função assíncrona que submete a url como requisição post e quando ela retorna true, navega para a página de questões
+  async function onSubmit(url: string) {
+    setIsLoading(true);
+    setTimeout(() => {
+      // Simulate a delay
+      setIsLoading(false);
+      navigate('/questions');
+    }, 10000);  
+  }
+
   return (
     <div>
+      {isLoading && (
+        <div className='waiting'>
+          <img src={waitUp} alt="Carregando..." style={{ width: 100, height: 100 }} />
+        </div>
+      )}
       <header className="header">
         <div className="header-container">
           <h3 className="logo">
@@ -55,7 +83,7 @@ export default function Home() {
               <li><Link to="/">About</Link></li>
               <li><Link to="/">Contact</Link></li>
               <li><Link to="/questions">Question</Link></li>
-              
+
             </ul>
           </nav>
 
@@ -85,15 +113,16 @@ export default function Home() {
               <li><img src={CheckIco} alt="" />Exercícios</li>
             </ul>
 
-            <form action="#" method="POST" className="search-form">
+            {/* <form action="#" method="POST" className="search-form">
               <input
                 type="url"
                 name="videoURL"
                 placeholder="Enter a valid YouTube URL"
                 required
               />
-              <button type="submit">Pesquisar</button>
-            </form>
+              <button type="submit" onClick={handleSubmit}>Pesquisar</button>
+            </form> */}
+            <UrlForm onSubmit={onSubmit} />
           </div>
         </div>
       </section>
