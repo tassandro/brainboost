@@ -6,3 +6,4 @@ python-jose
 python-multipart
 python-decouple
 nano
+nanoid

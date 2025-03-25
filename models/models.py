@@ -19,9 +19,9 @@ class Video(Base):
     __tablename__ = "video"
     
     id_video = Column(String, primary_key=True, index=True, default=lambda: generate(size=10))  
-    link_video = Column(String, unique=True, nullable=False)
-    lyrics_video = Column(String, nullable=False)
-    resumo_video = Column(String, nullable=False)
+    link_video = Column(String, unique=True, nullable=True)
+    #yrics_video = Column(String, nullable=True)
+    resumo_video = Column(String, nullable=True)
     
     # Relacionamento com Question
     questions = relationship("Question", back_populates="video")
