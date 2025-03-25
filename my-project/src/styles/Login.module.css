@@ -1,0 +1,116 @@
+/* Login.module.css */
+.pageWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #eff0f3;
+}
+
+.container {
+  position: relative;
+  max-width: 350px;
+  background: linear-gradient(0deg, #eff0f3 0%, #fffffe 100%);
+  border-radius: 40px;
+  padding: 25px 35px;
+  box-shadow: #7b7b7b 0px 30px 30px -20px;
+  margin: 20px;
+}
+
+.heading {
+  text-align: center;
+  font-weight: 900;
+  font-size: 30px;
+  color: #434343;
+}
+
+.form {
+  margin-top: 20px;
+}
+
+.backBtn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-left: 35px;
+  margin-top: 21px;
+  appearance: none;
+  background: linear-gradient(#325239, #325239);
+  border-radius: 0.9375em;
+  box-sizing: border-box;
+  color: #1A1A1A;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  height: 45px;
+  width: 18%;
+  padding: 1%;
+  line-height: 10px;
+  transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+}
+
+.backBtn:hover {
+  color: #fff;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+  transform: translateY(-2px);
+}
+
+.backBtn:active {
+  box-shadow: none;
+  transform: translateY(0);
+}
+
+.loginButton {
+  appearance: none;
+  background: #325239;
+  border-radius: 0.9375em;
+  box-sizing: border-box;
+  color: #1A1A1A;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  height: 45px;
+  margin-top: 10%;
+  width: 100%;
+  padding: 0 2em;
+  text-align: center;
+  transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+}
+
+.loginButton:hover {
+  color: #fff;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+  transform: translateY(-2px);
+}
+
+.loginButton:active {
+  box-shadow: none;
+  transform: translateY(0);
+}
+
+.input {
+  width: 100%;
+  height: 45px;
+  padding: 12px;
+  margin: 5px;
+  border-radius: 12px;
+  border: 1.5px solid lightgrey;
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+  box-shadow: 0px 0px 20px -18px;
+}
+
+.input:hover {
+  border: 2px solid lightgrey;
+  box-shadow: 0px 0px 20px -17px;
+}
+
+.input:active {
+  transform: scale(0.99);
+}
+
+.input:focus {
+  border: 2px solid grey;
+}
