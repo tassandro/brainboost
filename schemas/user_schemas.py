@@ -7,7 +7,7 @@ class UserCreate(BaseModel):
     password: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 # Modelo para o token de acesso
 class Token(BaseModel):
@@ -21,5 +21,4 @@ class UserOut(BaseModel):
     username: str
 
     class Config:
-        orm_mode = True
         from_attributes = True
