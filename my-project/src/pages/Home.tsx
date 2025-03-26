@@ -56,7 +56,7 @@ export default function Home() {
       // Simulate a delay
       setIsLoading(false);
       navigate('/questions');
-    }, 10000);  
+    }, 3000);  
   }
 
   return (
