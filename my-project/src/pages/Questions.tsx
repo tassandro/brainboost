@@ -34,16 +34,14 @@ export default function Questions() {
       <main className={styles.mainContent}>
         <div className={styles.container}>
           <div className={styles.pergunta}>
-            <p>Como a imaginação do admirador contribui para sua admiração pelo artista?</p>
+            <p>O que a função len() faz em Python?</p>
           </div>
 
           <div className={styles.respostas}>
-            <button className={styles.rButton}>
-              A. Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor, natus aliquid. Adipisci labore distinctio consequatur ducimus praesentium laborum, repellat odit veniam culpa repellendus accusamus modi quos aliquam excepturi ipsam! Tenetur!
-            </button>
-            <button className={styles.rButton}>B.</button>
-            <button className={styles.rButton}>C.</button>
-            <button className={styles.rButton}>D.</button>
+            <button className={styles.rButton}>A. Retorna o maior número de uma lista</button>
+            <button className={styles.rButton}>B. Conta o número de elementos em um objeto iterável</button>
+            <button className={styles.rButton}>C. Cria uma nova lista a partir de outra</button>
+            <button className={styles.rButton}>D. Verifica se todos os elementos são inteiros</button>
           </div>
 
           <div className={styles.navegacao}>

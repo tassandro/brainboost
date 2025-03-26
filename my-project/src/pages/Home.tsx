@@ -103,8 +103,7 @@ export default function Home() {
           <div className="hero-content">
             <h5>O que nós fazemos</h5>
             <h1>Resumos concisos de vídeo aulas do YouTube e questões interativas.</h1>
-            <p>              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-              dolore eu fugiat nulla pariatur.
+            <p>Cole o link, receba o resumo e pratique com questões. Simples, rápido e eficaz.
             </p>
 
             <ul className="hero-list">
@@ -139,7 +138,7 @@ export default function Home() {
             >
               <img src={BookIco} alt="" className="card-icon" />
               <h4>Resumos</h4>
-              <p>Sample text. Click again or double click to start editing the text.</p>
+              <p>Videoaulas viram resumos rápidos e objetivos.</p>
             </div>
 
             <div
@@ -148,7 +147,7 @@ export default function Home() {
             >
               <img src={BookPcIco} alt="" className="card-icon" />
               <h4>Estratégia</h4>
-              <p>Sample text. Click again or double click to start editing the text.</p>
+              <p>Usar NLP para resumir vídeos e gerar prática personalizada.</p>
             </div>
 
             <div
@@ -157,7 +156,7 @@ export default function Home() {
             >
               <img src={BookIco} alt="" className="card-icon" />
               <h4>Missão</h4>
-              <p>Sample text. Click again or double click to start editing the text.</p>
+              <p>Tornar o estudo mais eficiente com resumos e questões automáticas.</p>
             </div>
 
             <div
@@ -166,7 +165,7 @@ export default function Home() {
             >
               <img src={PcIco} alt="" className="card-icon" />
               <h4>Aprendizado</h4>
-              <p>Sample text. Click again or double click to start editing the text.</p>
+              <p>Conteúdo é fixado com revisão ativa e inteligente.</p>
             </div>
           </div>
         </div>
@@ -179,7 +178,7 @@ export default function Home() {
             <ul className="strategy-list">
               <li>
                 <h3>01. Resumos automáticos de videoaulas do YouTube</h3>
-                <p>Utilizamos algoritmos de processamento de linguagem natural (NLP) para transformar videoaulas longas em resumos objetivos e organizados, economizando tempo e facilitando a revisão. O estudante pode colar o link de um vídeo e obter rapidamente uma síntese dos principais tópicos abordados.</p>
+                <p>Utilizamos algoritmos de NLP para converter videoaulas longas em resumos claros e organizados. O estudante insere o link do vídeo e recebe rapidamente uma síntese dos principais tópicos, otimizando o tempo de estudo e facilitando a revisão.</p>
               </li>
               <li>
                 <h3>02. Criação de questões personalizadas para revisão</h3>
