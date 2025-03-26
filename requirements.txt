@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+sqlalchemy
+passlib[bcrypt]
+python-jose
+python-multipart
+python-decouple
+nanoid
+youtube_transcript_api
+openai==0.28
+utils
