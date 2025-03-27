@@ -89,3 +89,20 @@ Construído com **React Native**, permitindo que os usuários acessem o **BrainB
 Nosso objetivo é tornar o aprendizado mais acessível e interativo, proporcionando uma experiência personalizada e gamificada para cada usuário. 
 
 ---
+
+## 🚀 Execução do Projeto
+
+Para rodar o projeto localmente utilizando Docker, siga os passos abaixo:
+
+1. Certifique-se de ter o **Docker** e o **Docker Compose** instalados.
+2. Navegue até o diretório **brainboost**.
+3. Execute o seguinte comando:
+   ```sh
+   docker compose up --build
+   ```
+
+Após a inicialização, os serviços estarão disponíveis nos seguintes endereços:
+
+- **Backend**: `http://localhost:8080`
+- **Frontend**: `http://localhost:3000`
+
