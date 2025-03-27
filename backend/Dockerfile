@@ -20,7 +20,7 @@ RUN poetry install
 # Etapa 4: Copiar o código da aplicação
 COPY . /app/
 
-COPY .env /app/.env
+COPY ../.env /app/.env
 
 
 # Expor a porta que o FastAPI vai rodar
