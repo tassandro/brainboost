@@ -1,18 +1,29 @@
-version: '3.8'
-
 services:
   backend:
     build: ./backend
-    container_name: brainboost
+    container_name: bboost_back
     ports:
       - "8080:8080"
     volumes:
-      - ./data:/app/data 
+      - ./data_back:/app/data_back
     environment:
-      - DATABASE_URL=sqlite:///./test.db  # Caminho do banco SQLite
+      - DATABASE_URL=sqlite:///./users.db  # Caminho do banco SQLite
     restart: always
     env_file:
       - .env
 
-  # frontend: 
-  #   build: ./frontend
+  frontend: 
+    build: ./frontend
+    container_name: bboost_front
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data_front:/app/data_front
+    env_file:
+      - .env
+
+volumes:
+  data_back:
+  data_front:
