@@ -67,10 +67,10 @@ Após a inicialização, os serviços estarão disponíveis nos seguintes endere
 Certifique-se de criar um arquivo `.env` na raiz do projeto com as seguintes variáveis:
 
 ```ini
-SECRET_KEY
-ALGORITHM
-ACCESS_TOKEN_EXPIRE_MINUTES
-OPENAI_API_KEY
+SECRET_KEY="insira_sua_chave"
+ALGORITHM="HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+OPENAI_API_KEY="insira_sua_chave"
 ```
 
 ### Descrição das Variáveis:
