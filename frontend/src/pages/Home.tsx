@@ -20,6 +20,7 @@ import UrlForm from './components/urlForm';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './Context/AuthContext';
+import { submitVideo } from '../Services/videoService';
 
 export default function Home() {
   useEffect(() => {
@@ -48,15 +49,28 @@ export default function Home() {
     navigate('/');
   };
 
-
-  //função assíncrona que submete a url como requisição post e quando ela retorna true, navega para a página de questões
   async function onSubmit(url: string) {
+    // Verifica se o usuário está logado
+    if (!isAuthenticated) {
+      // alert('Você precisa estar logado para enviar um vídeo.');
+      navigate('/plans');
+      return;
+    }
+  
     setIsLoading(true);
-    setTimeout(() => {
-      // Simulate a delay
+  
+    try {
+      const result = await submitVideo(url);
+      // Armazenando no localStorage
+      localStorage.setItem('video_data', JSON.stringify(result));
+  
       setIsLoading(false);
       navigate('/questions');
-    }, 3000);  
+    } catch (err: any) {
+      console.error('Erro ao processar vídeo:', err);
+      alert('Erro ao processar o vídeo. Verifique o link e tente novamente.');
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -85,7 +99,8 @@ export default function Home() {
               <li><Link to="/">About</Link></li>
               <li><Link to="/">Contact</Link></li>
               <li><Link to="/questions">Question</Link></li>
-
+              <li><Link to="/register">Register</Link></li>
+              <li><Link to="/profile">Profile</Link></li>
             </ul>
           </nav>
           {!isAuthenticated ? <Link to="/login" className="btn login-btn">Login</Link> : <button onClick={handleLogout} className="btn login-btn">Logout</button>}

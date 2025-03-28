@@ -131,3 +131,30 @@
 .navButton:active {
   transform: scale(0.97);
 }
+
+.correct {
+  background-color: #d4edda;
+  border: 1px solid #28a745;
+  color: #155724;
+}
+
+/* Scores */
+.incorrect {
+  background-color: #f8d7da;
+  border: 1px solid #dc3545;
+  color: #721c24;
+}
+
+.feedback {
+  margin-top: 1rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.score {
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1rem;
+}

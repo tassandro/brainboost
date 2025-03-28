@@ -2,6 +2,8 @@ import React, { ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 
+
+//privateRoute.tsx
 type PrivateRouteProps = {
   children: ReactNode;
 };
