@@ -29,7 +29,7 @@ class Video(Base):
 
 
 class Input(Base):
-    __tablename__ = "input"
+    __tablename__ = "inputs"
     
     id_input = Column(String, primary_key=True, index=True, default=lambda: generate(size=10))
     id_user = Column(String, ForeignKey("users.id"), nullable=False)  
