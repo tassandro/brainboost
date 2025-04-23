@@ -29,7 +29,7 @@ export default function Home() {
   return (
     <div id="home">
       <Waiting isLoading={isLoading} />
-      <Header navBar={true}/>
+      <Header navBar={true} />
       <SectionA setIsLoading={setIsLoading} />
       <SectionB />
       <div id="about">

@@ -35,7 +35,7 @@ export default function Plans() {
                             <p><img className={styles.icon} src={checkIco} alt="" />Resumos de vídeos até 5 min</p>
                             <p><img className={styles.icon} src={checkIco} alt="" />10 questões por vídeo</p>
                         </div>
-                            <button onClick={() => navigate('/register')} className="self-center mb-5 w-[140px] h-10 bg-[#537459e5] text-white font-semibold rounded-md shadow-md hover:bg-[#537459] hover:ring-2 hover:ring-secondary">Assine Grátis</button>
+                        <button onClick={() => navigate('/register')} className="self-center mb-5 w-[140px] h-10 bg-[#537459e5] text-white font-semibold rounded-md shadow-md hover:bg-[#537459] hover:ring-2 hover:ring-secondary">Assine Grátis</button>
                     </div>
 
                     <div className={`${styles.planCard} ${styles.recommended}`}>
@@ -47,7 +47,7 @@ export default function Plans() {
                             <p><img className={styles.icon} src={checkIco} alt="" />Geração Flashcards</p>
                             <p><img className={styles.icon} src={checkIco} alt="" />30 Questões por vídeo</p>
                         </div>
-                            <button className="self-center mb-5 w-[140px] h-10 bg-[#537459e5] text-white font-semibold rounded-md shadow-md hover:bg-[#537459] hover:ring-2 hover:ring-secondary">Assinar Premium</button>
+                        <button className="self-center mb-5 w-[140px] h-10 bg-[#537459e5] text-white font-semibold rounded-md shadow-md hover:bg-[#537459] hover:ring-2 hover:ring-secondary">Assinar Premium</button>
                     </div>
 
                     <div className={styles.planCard}>
@@ -56,7 +56,7 @@ export default function Plans() {
                             <h3>Já possui uma conta?</h3>
                             <p>Acesse seus resumos e questões interativas agora.</p>
                         </div>
-                            <button onClick={() => navigate('/login')} className="self-center mb-5 w-[140px] h-10 bg-[#537459e5] text-white font-semibold rounded-md shadow-md hover:bg-[#537459] hover:ring-2 hover:ring-secondary">Começar agora</button>
+                        <button onClick={() => navigate('/login')} className="self-center mb-5 w-[140px] h-10 bg-[#537459e5] text-white font-semibold rounded-md shadow-md hover:bg-[#537459] hover:ring-2 hover:ring-secondary">Começar agora</button>
                     </div>
                 </div>
             </main>

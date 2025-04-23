@@ -24,7 +24,8 @@ function App() {
           <div className="min-h screen overflow-x-hidden font-sans">
             <Routes>
               {/* Rotas públicas */}
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Navigate to='/home' replace/>}/>
+              <Route path="/home" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/plans" element={<Plans />} />

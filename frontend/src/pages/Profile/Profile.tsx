@@ -5,6 +5,7 @@ import axios from 'axios';
 import Waiting from '@/components/Waiting/waiting';
 import Header from '@/components/Header/header';
 import UrlForm from '@/components/UrlForm/urlForm';
+import Simulate from '@/tests/ApiSimulator';
 
 type Question = {
     id_question: string;
@@ -67,6 +68,7 @@ export default function Profile() {
 
                 </div>
                 <button onClick={() => navigate('/edit')} className='btn w-[100px] items-center mx-auto justify-center flex my-5'>Edit Profile</button>
+                <Simulate/>
                 <h1 className="text-3xl font-bold mb-6 mt-6 text-center">Histórico de Vídeos</h1>
                 <ul className="space-y-6">
                     {history.map((video) => (

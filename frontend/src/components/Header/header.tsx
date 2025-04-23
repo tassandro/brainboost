@@ -1,6 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
 import BrainIco from '@/assets/images/ico/BrainIco.png';
 import { useAuth } from '@/context/AuthContext';
+import { useLocation } from 'react-router-dom';
+import { ReactComponent as ArrowIcon } from '@/assets/images/ico/arrowBack.svg';
 
 type HeaderProps = {
   navBar: boolean;
@@ -9,6 +11,7 @@ type HeaderProps = {
 export default function Header({ navBar }: HeaderProps) {
   const { isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
     logout();
@@ -49,7 +52,6 @@ export default function Header({ navBar }: HeaderProps) {
               <li><Link to="/" onClick={() => scrollHome()} >Home</Link></li>
               <li><Link to="/" onClick={() => scrollAbout()}>About</Link></li>
               <li><Link to="/">Contact</Link></li>
-              {/* <li><Link to="/questions">Question</Link></li> */}
               {
                 isAuthenticated &&
                 <li><Link to="/profile">Profile</Link></li>
@@ -58,10 +60,15 @@ export default function Header({ navBar }: HeaderProps) {
           </nav>
         }
 
-        <nav className="space-x-4">
-        {!isAuthenticated &&
-          <button onClick={() => navigate('/register')} className='text-gray-600'>Sign Up</button>
-        }
+        <nav className="flex space-x-4">
+          {location.pathname === '/questions' &&
+            <button onClick={() => navigate('/profile')} className='text-gray-300 flex items-center justify-center h-12 w-12 hover:rounded-full hover:bg-gray-100 hover:text-gray-500'>
+              <ArrowIcon/>
+            </button>
+          }
+          {!isAuthenticated &&
+            <button onClick={() => navigate('/register')} className='text-gray-600 hover:text-gray-700'>Sign Up</button>
+          }
           {!isAuthenticated ?
             <button onClick={() => navigate('/login')} className="w-[100px] h-12 bg-[#537459e5] text-white font-semibold rounded-full shadow-md hover:bg-[#537459] hover:ring-2 hover:ring-secondary">Login</button> :
             <button onClick={handleLogout} className="w-[100px] h-12 bg-[#537459e5] text-white font-semibold rounded-full shadow-md hover:bg-[#537459] hover:ring-2 hover:ring-secondary">Logout</button>

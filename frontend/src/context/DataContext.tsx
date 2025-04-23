@@ -6,6 +6,7 @@ type Question = {
   pontuacao: number;
   alternatives: string[];
   correct_answer: string;
+  userAnswer?: string;
 };
 
 export type VideoData = {
