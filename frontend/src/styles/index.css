@@ -15,3 +15,10 @@ code {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .btn {
+    @apply h-12 bg-[#537459e5] text-white font-semibold rounded-full shadow-md
+           hover:bg-[#537459] hover:ring-2 hover:ring-secondary transition-all;
+  }
+}

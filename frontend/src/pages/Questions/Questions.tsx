@@ -4,43 +4,52 @@ import styles from '@/pages/Questions/Questions.module.css';
 import { useAuth } from '@/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import BrainIco from '@/images/ico/BrainIco.png';
+import { useData } from '@/context/DataContext';
 
-type Question = {
-  id_question: string;
-  texto_questao: string;
-  pontuacao: number;
-  alternatives: string[];
-  correct_answer: string;
-};
+// type Question = {
+//   id_question: string;
+//   texto_questao: string;
+//   pontuacao: number;
+//   alternatives: string[];
+//   correct_answer: string;
+// };
 
-type VideoData = {
-  id_video: string;
-  link_video: string;
-  resumo_video: string;
-  questions: Question[];
-};
+// type VideoData = {
+//   id_video: string;
+//   link_video: string;
+//   resumo_video: string;
+//   questions: Question[];
+// };
 
 export default function Questions() {
   const { isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
-  const [videoData, setVideoData] = useState<VideoData | null>(null);
+  // const [videoData, setVideoData] = useState<VideoData | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [finished, setFinished] = useState(false);
+  const {videoData} = useData();
+
+  // useEffect(() => {
+  //   const saved = localStorage.getItem('video_data');
+  //   if (saved) {
+  //     setVideoData(JSON.parse(saved));
+  //   } else {
+  //     navigate('/');
+  //   }
+  // }, [navigate]);
 
   useEffect(() => {
-    const saved = localStorage.getItem('video_data');
-    if (saved) {
-      setVideoData(JSON.parse(saved));
-    } else {
+    if (!videoData) {
       navigate('/');
     }
-  }, [navigate]);
+  }, [videoData, navigate]);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     logout();
-    navigate('/');
+    await new Promise((r) => setTimeout(r, 0)); // aguarda ciclo de render necessário para não renderizar a rota protegida depois do logout
+    navigate('/', { replace: true });
   };
 
   const currentQuestion = videoData?.questions[currentIndex];

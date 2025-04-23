@@ -44,19 +44,24 @@ export default function Header({ navBar }: HeaderProps) {
         </h3>
 
         {navBar &&
-          <nav className="space-x-2 navbar">
+          <nav className="w-1/3 justify-center space-x-2 navbar items-center">
             <ul>
               <li><Link to="/" onClick={() => scrollHome()} >Home</Link></li>
               <li><Link to="/" onClick={() => scrollAbout()}>About</Link></li>
               <li><Link to="/">Contact</Link></li>
               {/* <li><Link to="/questions">Question</Link></li> */}
-              {/* <li><Link to="/profile">Profile</Link></li> */}
+              {
+                isAuthenticated &&
+                <li><Link to="/profile">Profile</Link></li>
+              }
             </ul>
           </nav>
         }
 
         <nav className="space-x-4">
+        {!isAuthenticated &&
           <button onClick={() => navigate('/register')} className='text-gray-600'>Sign Up</button>
+        }
           {!isAuthenticated ?
             <button onClick={() => navigate('/login')} className="w-[100px] h-12 bg-[#537459e5] text-white font-semibold rounded-full shadow-md hover:bg-[#537459] hover:ring-2 hover:ring-secondary">Login</button> :
             <button onClick={handleLogout} className="w-[100px] h-12 bg-[#537459e5] text-white font-semibold rounded-full shadow-md hover:bg-[#537459] hover:ring-2 hover:ring-secondary">Logout</button>

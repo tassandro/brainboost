@@ -9,41 +9,51 @@ import Home from '@/pages/Home/Home';
 import Login from '@/pages/Login/Login';
 import Register from '@/pages/Register/Register';
 import Questions from '@/pages/Questions/Questions';
-import Profile from '@/pages/Profile/EditProfile';
+import Profile from '@/pages/Profile/Profile';
 import Plans from '@/pages/Plans/Plans';
+import EditProfile from '@/pages/Profile/EditProfile';
 import { PrivateRoute } from '@/routes/PrivateRoute';
 import { AuthProvider } from '@/context/AuthContext';
+import { DataProvider } from '@/context/DataContext';
 
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <div className="min-h screen overflow-x-hidden font-sans">
-          <Routes>
-            {/* Rotas públicas */}
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/plans" element={<Plans />} />
+      <DataProvider>
+        <Router>
+          <div className="min-h screen overflow-x-hidden font-sans">
+            <Routes>
+              {/* Rotas públicas */}
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/plans" element={<Plans />} />
 
-            {/* Rotas protegidas */}
-            <Route path="/questions" element={
-              <PrivateRoute>
-                <Questions />
-              </PrivateRoute>
-            } />
+              {/* Rotas protegidas */}
+              <Route path="/questions" element={
+                <PrivateRoute>
+                  <Questions />
+                </PrivateRoute>
+              } />
 
-            <Route path="/profile" element={
-              <PrivateRoute>
-                <Profile />
-              </PrivateRoute>
-            } />
+              <Route path="/profile" element={
+                <PrivateRoute>
+                  <Profile />
+                </PrivateRoute>
+              } />
 
-            {/* Rota fallback: redireciona qualquer rota inválida para a home */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </div>
-      </Router>
+              <Route path="/edit" element={
+                <PrivateRoute>
+                  <EditProfile />
+                </PrivateRoute>
+              } />
+
+              {/* Rota fallback: redireciona qualquer rota inválida para a home */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </div>
+        </Router>
+      </DataProvider>
     </AuthProvider>
   );
 }

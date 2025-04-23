@@ -9,7 +9,9 @@ type PrivateRouteProps = {
 };
 
 export const PrivateRoute = ({ children }: PrivateRouteProps) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
+
+  if(loading) return null;
 
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
 };
