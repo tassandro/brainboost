@@ -4,7 +4,7 @@ from schemas.answer_schemas import AnswerSubmission
 from fastapi import HTTPException
 from datetime import datetime
 
-def calculate_score(db: Session, answer_submission: AnswerSubmission):
+def calculate_score(db: Session, answer_submission: AnswerSubmission, id_user: str):
     questions = db.query(Question).filter(Question.id_video == answer_submission.id_video).all()
     
     if not questions:
@@ -18,7 +18,7 @@ def calculate_score(db: Session, answer_submission: AnswerSubmission):
     score = (correct_count / total_questions) * 100 if total_questions > 0 else 0
 
     input_entry = db.query(Input).filter(
-        Input.id_user == answer_submission.id_user,
+        Input.id_user == id_user,
         Input.id_video == answer_submission.id_video
     ).first()
 
@@ -26,7 +26,7 @@ def calculate_score(db: Session, answer_submission: AnswerSubmission):
         input_entry.score = score
     else:
         input_entry = Input(
-            id_user=answer_submission.id_user,
+            id_user=id_user,
             id_video=answer_submission.id_video,
             data_input=datetime.now(),  
             score=score

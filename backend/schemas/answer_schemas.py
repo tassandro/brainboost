@@ -8,6 +8,5 @@ class UserAnswer(BaseModel):
 
 
 class AnswerSubmission(BaseModel):
-    id_user: str
     id_video: str
     answers: List[UserAnswer]
