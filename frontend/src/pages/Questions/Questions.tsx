@@ -54,7 +54,7 @@ export default function Questions() {
     if (!videoData || !user || !token) return;
 
     const payload = {
-      id_user: String(user.id),
+      // id_user: String(user.id),
       id_video: String(videoData.id_video),
       answers: videoData.questions.map((q) => ({
         id_question: String(q.id_question),
