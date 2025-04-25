@@ -25,7 +25,7 @@ const VideoContext = createContext<VideoContextType | undefined>(undefined);
 
 export function DataProvider({ children }: { children: ReactNode }) {
   const [videoData, setVideoData] = useState<VideoData | null>(null);
-
+  
   return (
     <VideoContext.Provider value={{ videoData, setVideoData }}>
       {children}

@@ -4,6 +4,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useLocation } from 'react-router-dom';
 import { ReactComponent as ArrowIcon } from '@/assets/images/ico/arrowBack.svg';
 
+
 type HeaderProps = {
   navBar: boolean;
 };
@@ -23,8 +24,8 @@ export default function Header({ navBar }: HeaderProps) {
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }
-    else {
-      navigate('/');
+    if (location.pathname !== '/home') {
+      navigate('/home');
     }
   }
 
@@ -49,9 +50,9 @@ export default function Header({ navBar }: HeaderProps) {
         {navBar &&
           <nav className="w-1/3 justify-center space-x-2 navbar items-center">
             <ul>
-              <li><Link to="/" onClick={() => scrollHome()} >Home</Link></li>
-              <li><Link to="/" onClick={() => scrollAbout()}>About</Link></li>
-              <li><Link to="/">Contact</Link></li>
+              <li><Link to="/home" onClick={() => scrollHome()} >Home</Link></li>
+              <li><Link to="/home" onClick={() => scrollAbout()}>About</Link></li>
+              <li><Link to="/home">Contact</Link></li>
               {
                 isAuthenticated &&
                 <li><Link to="/profile">Profile</Link></li>

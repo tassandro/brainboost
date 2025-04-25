@@ -5,6 +5,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useData } from '@/context/DataContext';
 import Header from '@/components/Header/header';
+import API from '@/api';
 
 export default function Questions() {
   const { token, user } = useAuth();
@@ -53,30 +54,17 @@ export default function Questions() {
     if (!videoData || !user || !token) return;
 
     const payload = {
-      id_user: user.id,
-      id_video: videoData.id_video,
+      id_user: String(user.id),
+      id_video: String(videoData.id_video),
       answers: videoData.questions.map((q) => ({
-        id_question: q.id_question,
-        answer: q.userAnswer || '',
+        id_question: String(q.id_question),
+        answer: q.userAnswer ?? '',
       })),
     };
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/submit_answers/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        throw new Error('Erro ao enviar respostas');
-      }
-
-      const data = await response.json();
-      console.log('Pontuação salva com sucesso:', data);
+      const response = await API.post('/submit_answers/', payload);
+      console.log('Pontuação salva com sucesso:', response.data);
     } catch (error) {
       console.error('Erro no envio das respostas:', error);
     }
@@ -91,6 +79,7 @@ export default function Questions() {
       if (!IS_SIMULATING) {
         await submitAnswers();
       }
+      await submitAnswers();
       setFinished(true);
     } else {
       setCurrentIndex(nextIndex);
@@ -113,6 +102,9 @@ export default function Questions() {
 
   if (!videoData) return <div className={styles.pageWrapper}>Carregando...</div>;
 
+  console.log(user)
+  console.log(token)
+
   return (
     <div>
       <Header navBar={false} />
@@ -121,7 +113,7 @@ export default function Questions() {
         <div className='flex pt-[85px] h-full w-full justify-center items-center'>
           <div className="bg-white rounded-xl p-6 w-[600px] shadow-lg object-center my-auto mx-auto">
             {finished ? (
-              <> 
+              <>
                 <h2>Quiz finalizado!</h2>
                 <p className={styles.score}>Sua pontuação: {score} / {videoData.questions.length}</p>
                 <button className={styles.navButton} onClick={handleRestart}>Reiniciar</button>

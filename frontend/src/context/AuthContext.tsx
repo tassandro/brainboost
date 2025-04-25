@@ -1,5 +1,7 @@
 //npm install jwt-decode
 import {jwtDecode} from 'jwt-decode'
+import API from '../api';
+import {User} from '@/services/userServices'
 
 import React, {
   createContext,
@@ -33,13 +35,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
+
     if (storedToken) {
       setToken(storedToken);
       try {
         const decoded = safelyDecode(storedToken);
         setUser({ id: decoded.id }); // ou decoded.id_user dependendo do payload
+
       } catch (err) {
         console.error("Erro ao decodificar token:", err);
+        logout(); // Se o token não puder ser decodificado, faça logout
+
       }
     }
     setLoading(false); // Finaliza o carregamento após ler o localStorage
@@ -79,3 +85,14 @@ export const useAuth = () => {
     throw new Error('useAuth must be used within an AuthProvider');
   return context;
 };
+
+export async function verifyToken() {
+  try {
+    console.log("Verificando token...");
+    const res = await API.get<{ user: User }>("/verify-token");
+    return res.data.user;
+  } catch (err) {
+    console.error("Erro ao verificar token:", err);
+    throw new Error("Token inválido");
+  }
+}

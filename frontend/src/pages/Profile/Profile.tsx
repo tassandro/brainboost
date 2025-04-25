@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import Waiting from '@/components/Waiting/waiting';
 import Header from '@/components/Header/header';
 import UrlForm from '@/components/UrlForm/urlForm';
 import Simulate from '@/tests/ApiSimulator';
+import API from '@/api';
 
 type Question = {
     id_question: string;
@@ -29,20 +29,29 @@ export default function Profile() {
     const [isLoading, setIsLoading] = useState(false);
     const { token, logout } = useAuth();
     const navigate = useNavigate();
+    const [isEmpty, setIsEmpty] = useState(false);
 
     useEffect(() => {
         const fetchHistory = async () => {
             try {
-                const res = await axios.get<VideoData[]>('/profile', {
+                console.log('Trying to connect...')
+                const res = await API.get<VideoData[]>('/profile', {
                     headers: {
                         Authorization: `Bearer ${token}`
-                    }
+                    }    
                 });
+                console.log('connected')
                 setHistory(res.data);
-            } catch (err) {
-                console.error('Erro ao buscar histórico:', err);
-                // logout();
-                // navigate('/login');
+            } catch (err:any) {
+                if (err.response?.status === 404) {
+                    console.warn('Nenhum vídeo encontrado, exibindo lista vazia.');
+                    setIsEmpty(true);
+                    setHistory([]); // mostra "nenhum vídeo" no frontend
+                  } else {
+                    console.error('Erro ao buscar histórico:', err);
+                    // logout();
+                    // navigate('/login');
+                  }
             } finally {
                 setLoading(false);
             }
@@ -61,6 +70,7 @@ export default function Profile() {
 
     return (
         <div className="px-4 py-10 flex-[1_1_60%]">
+            <Waiting isLoading={isLoading}/>
             <Header navBar={isLoading}></Header>
             <div className='pt-[85px]'>
                 <div className='max-w-[700px] object-center mx-auto'>
@@ -70,6 +80,10 @@ export default function Profile() {
                 <button onClick={() => navigate('/edit')} className='btn w-[100px] items-center mx-auto justify-center flex my-5'>Edit Profile</button>
                 <Simulate/>
                 <h1 className="text-3xl font-bold mb-6 mt-6 text-center">Histórico de Vídeos</h1>
+                {
+                    isEmpty &&
+                    <p className='text-center'>Nenhum vídeo encontrado</p> 
+                }
                 <ul className="space-y-6">
                     {history.map((video) => (
                         <li key={video.id_video} className="bg-white shadow-md rounded-lg p-6">
