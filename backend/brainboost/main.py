@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from models.database import engine, Base
-from routes import user_routes, video_routes, user_answer_routes
+from routes import user_routes, video_routes, user_answer_routes, user_videos
 
 # Criar tabelas
 Base.metadata.create_all(bind=engine)
@@ -21,6 +21,7 @@ app.add_middleware(
 app.include_router(user_routes.router)
 app.include_router(video_routes.router)
 app.include_router(user_answer_routes.router)
+app.include_router(user_videos.router)
 
 
 @app.get("/")
