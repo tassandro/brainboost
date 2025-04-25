@@ -49,8 +49,9 @@ Nosso objetivo é tornar o aprendizado mais acessível e interativo, proporciona
 Para rodar o projeto localmente utilizando Docker, siga os passos abaixo:
 
 1. Certifique-se de ter o **Docker** e o **Docker Compose** instalados.
-2. Navegue até o diretório **brainboost**.
-3. Execute o seguinte comando:
+2. Abra o Docker Desktop e faça o login.
+3. Navegue até o diretório **brainboost**.
+4. Execute o seguinte comando:
    ```sh
    docker compose up --build
    ```
