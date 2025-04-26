@@ -17,7 +17,30 @@ API.interceptors.request.use((config) => {
   console.log('[API REQUEST]', config.method?.toUpperCase(), config.baseURL + config.url);
   console.log('[HEADERS]', config.headers);
 
+  console.log('🔵 [API REQUEST]');
+  console.log('🔹 METHOD:', config.method?.toUpperCase());
+  console.log('🔹 URL:', config.baseURL + config.url);
+  console.log('🔹 HEADERS:', config.headers);
+  console.log('🔹 BODY:', config.data);
+
   return config;
 });
+
+API.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if(error.response && error.response.status === 401) {
+      console.warn('🔴 [API RESPONSE] Unauthorized - deslogando...');
+
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+)
 
 export default API;
