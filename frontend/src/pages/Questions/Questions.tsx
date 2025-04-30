@@ -54,7 +54,6 @@ export default function Questions() {
     if (!videoData || !user || !token) return;
 
     const payload = {
-      id_user: String(user.id),
       id_video: String(videoData.id_video),
       answers: videoData.questions.map((q) => ({
         id_question: String(q.id_question),
@@ -62,8 +61,14 @@ export default function Questions() {
       })),
     };
 
+    console.log(payload);
+
     try {
-      const response = await API.post('/submit_answers/', payload);
+      const response = await API.post('/submit_answers/', payload, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       console.log('Pontuação salva com sucesso:', response.data);
     } catch (error) {
       console.error('Erro no envio das respostas:', error);
@@ -74,12 +79,12 @@ export default function Questions() {
     if (!videoData) return;
 
     const nextIndex = currentIndex + 1;
+    console.log('nextIndex', nextIndex);
 
     if (nextIndex >= videoData.questions.length) {
       if (!IS_SIMULATING) {
         await submitAnswers();
       }
-      await submitAnswers();
       setFinished(true);
     } else {
       setCurrentIndex(nextIndex);
@@ -101,9 +106,6 @@ export default function Questions() {
   };
 
   if (!videoData) return <div className={styles.pageWrapper}>Carregando...</div>;
-
-  console.log(user)
-  console.log(token)
 
   return (
     <div>

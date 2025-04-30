@@ -16,7 +16,8 @@ export default function Header({ navBar }: HeaderProps) {
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    console.log('Logout realizado com sucesso!');
+    navigate('/home');
   };
 
   const scrollHome = () => {

@@ -36,16 +36,16 @@ export default function Login() {
         }
     };
 
-    const goBack = () => {
-        window.history.back();
-    };
+    // const goBack = () => {
+    //     window.history.back();
+    // };
 
     return (
         <div className="flex-col min-h-screen bg-[#f9f9f9] flex items-center justify-center px-4">
             <BrainLogo className="w-[130px] h-[130px]" />
             <div className="w-full max-w-[650px] h-[500px] bg-white rounded-3xl shadow-xl p-8 relative">
                 {/* Ícone de voltar */}
-                <button onClick={goBack} className="absolute top-4 left-4 text-2xl text-gray-500 hover:text-gray-700">
+                <button onClick={() => navigate("/home")} className="absolute top-4 left-4 text-2xl text-gray-500 hover:text-gray-700">
                     <ArrowIcon className="w-11 h-11 text-gray-500 hover:text-gray-400" />
                 </button>
 

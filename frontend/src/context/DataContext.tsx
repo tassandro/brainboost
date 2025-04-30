@@ -1,5 +1,6 @@
 import { createContext, useState, useContext, ReactNode } from 'react';
 
+// Response da api quando solicitado pelo /video
 type Question = {
   id_question: string;
   texto_questao: string;
