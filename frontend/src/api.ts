@@ -4,7 +4,7 @@ import axios from 'axios';
 // Faz com que o token seja enviado em todas as requisições
 // Criação de instância do axios com baseURL
 const API = axios.create({
-  baseURL: 'http://localhost:8000',
+  baseURL: 'http://localhost:8080',
 });
 
 // Adiciona o token a cada requisição, se existir

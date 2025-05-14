@@ -49,7 +49,7 @@ def generate_openai_summary(transcript: str) -> str:
 def generate_openai_questions(transcript: str) -> list:
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-3.5",
+            model="gpt-3.5-turbo",
             messages=[ 
                 {"role": "system", "content": "Você é um assistente que cria perguntas de múltipla escolha e indica a alternativa correta."},
                 {"role": "user", "content": f"""Crie EXATAMENTE 15 perguntas sobre o conteúdo a seguir, com alternativas numeradas (1, 2, 3, 4) e marque a resposta correta com um asterisco (*). Tome o tempo que precisar e não mencione o vídeo nas perguntas, apenas o tema ao qual o vídeo se refere
