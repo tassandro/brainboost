@@ -40,7 +40,7 @@ def generate_openai_summary(transcript: str) -> str:
             {"role": "system", "content": "Você é um assistente especializado em resumir conteúdos educacionais."},
             {"role": "user", "content": f"Explique o tema da aula de forma clara e objetiva, não fale nada sobre a aula em si, seja impessoal, divida a explicação em 5 parágrafos distintos. Não use numeração, listas ou marcadores.\n{transcript}"}
         ],
-        max_tokens=200,  
+        max_tokens=20,  
         temperature=0.7  # Controle a criatividade do resumo
     )
 
@@ -49,7 +49,7 @@ def generate_openai_summary(transcript: str) -> str:
 def generate_openai_questions(transcript: str) -> list:
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-4",
+            model="gpt-3.5-turbo",
             messages=[ 
                 {"role": "system", "content": "Você é um assistente que cria perguntas de múltipla escolha e indica a alternativa correta."},
                 {"role": "user", "content": f"""Crie EXATAMENTE 15 perguntas sobre o conteúdo a seguir, com alternativas numeradas (1, 2, 3, 4) e marque a resposta correta com um asterisco (*). Tome o tempo que precisar e não mencione o vídeo nas perguntas, apenas o tema ao qual o vídeo se refere
@@ -63,8 +63,8 @@ P: Qual é o resultado de 15 dividido por 5?
 
 Conteúdo do vídeo: {transcript}"""}
             ],
-            temperature=0.7,
-            max_tokens=2000
+            temperature=0.5,
+            max_tokens=1000
         )
 
         content = response['choices'][0]['message']['content']

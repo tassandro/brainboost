@@ -9,7 +9,7 @@ Este projeto tem como objetivo oferecer um ambiente interativo onde os usuários
 
 - **Backend**: FastAPI (Python)  
 - **Banco de Dados**: SQLite  
-- **Frontend**: React  
+- **Frontend**: React + TailWind + Craco 
 - **App Mobile**: React Native  
 - **Integração com IA**: youtube_transcript_api e OpenAI GPT-4 para transcrição e geração de conteúdo, respectivamente  
 - **Autenticação**: JWT para segurança do login

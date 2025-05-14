@@ -14,12 +14,8 @@ router = APIRouter()
 def submit_answers(
     answer_submission: AnswerSubmission,
     db: Session = Depends(get_db),
-    token: str = Depends(oauth2_scheme)  # Obtém o token do header Authorization
+    token: str = Depends(oauth2_scheme)
 ):
-    current_user = get_user_from_token(db, token)  # Autentica o usuário
+    current_user = get_user_from_token(db, token)
 
-    # Garante que o usuário só possa enviar respostas dele mesmo
-    if answer_submission.id_user != current_user.id:
-        raise HTTPException(status_code=403, detail="Usuário não autorizado.")
-
-    return calculate_score(db, answer_submission)
+    return calculate_score(db, answer_submission, current_user.id)
