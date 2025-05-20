@@ -13,7 +13,7 @@ type UrlFormProps = {
 
 export default function UrlForm({ setIsLoading }: UrlFormProps) {
   const [url, setUrl] = useState('');
-  const { isAuthenticated } = useAuth();
+  // const { isAuthenticated } = useAuth();
   const { setVideoData } = useData();
   const navigation = useNavigation();
 

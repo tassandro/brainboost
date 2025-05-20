@@ -13,7 +13,7 @@ export default function Waiting({ isLoading }: WaitingProps) {
   return (
     <View style={styles.container}>
       <LottieView
-        source={require('../assets/images/wait.json')} // precisa converter o gif para lottie
+        source={require('@img/waitup.gif')} // precisa converter o gif para lottie
         autoPlay
         loop
         style={{ width: 120, height: 120 }}

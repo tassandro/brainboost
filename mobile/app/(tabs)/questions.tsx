@@ -63,9 +63,8 @@ export default function Questions() {
     const nextIndex = currentIndex + 1;
 
     if (nextIndex >= videoData.questions.length) {
-      if (!IS_SIMULATING) {
-        await submitAnswers();
-      }
+      await submitAnswers();
+      
       setFinished(true);
     } else {
       setCurrentIndex(nextIndex);

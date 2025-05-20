@@ -21,22 +21,27 @@ export default function Profile() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const fetchHistory = async () => {
-      try {
-        const res = await API.get<VideoData[]>('/profile');
-        setHistory(res.data);
-      } catch (err: any) {
-        if (err.response?.status === 404) {
-          setHistory([]);
-        } else if (__DEV__) {
-          console.warn('Erro ao buscar histórico:', err?.response?.data ?? err.message);
+    const timer = setTimeout(() => {
+      const fetchHistory = async () => {
+        try {
+          const res = await API.get<VideoData[]>('/profile');
+          setHistory(res.data);
+        } catch (err: any) {
+          if (err.response?.status === 404) {
+            setHistory([]);
+          } else if (__DEV__) {
+            console.warn('Erro ao buscar histórico:', err?.response?.data ?? err.message);
+          }
+        } finally {
+          setLoading(false);
         }
-      } finally {
-        setLoading(false);
-      }
-    };
+      };
 
-    fetchHistory();
+      fetchHistory();
+    }, 1000);
+    return () => {
+      clearTimeout(timer);
+    };
   }, []);
 
 

@@ -41,13 +41,17 @@ export default function FloatingMenu({ position }: FloatingMenuProps) {
     }).start();
   };
 
-  const closeMenu = () => {
-    Animated.timing(slideAnim, {
-      toValue: width,
-      duration: 300,
-      useNativeDriver: false,
-    }).start(() => setVisible(false));
-  };
+  const closeMenuAsync = () =>
+    new Promise<void>((resolve) => {
+      Animated.timing(slideAnim, {
+        toValue: width,
+        duration: 300,
+        useNativeDriver: false,
+      }).start(() => {
+        setVisible(false);
+        resolve();
+      });
+    });
 
   const handleNavigate = (screen: string) => {
     Animated.timing(slideAnim, {
@@ -62,10 +66,15 @@ export default function FloatingMenu({ position }: FloatingMenuProps) {
     });
   };
 
-  const handleLogout = () => {
-    logout();
-    closeMenu();
-    navigation.navigate('home' as never);
+  const handleLogout = async () => {
+    await closeMenuAsync();     // aguarda fim da animação
+    console.log('Menu fechado');
+    console.log('Realizando logout...');
+    await logout();             // aguarda logout
+    console.log('Logout realizado');
+    console.log('Redirecionando para login...');
+    router.replace("/login");  // só então navega
+    console.log('Redirecionamento completo');
   };
 
   const { setVideoData } = useData();
@@ -115,7 +124,7 @@ export default function FloatingMenu({ position }: FloatingMenuProps) {
 
       <Modal visible={visible} transparent animationType="none">
         <View style={styles.modalContainer}>
-          <TouchableOpacity style={styles.overlay} onPress={closeMenu} activeOpacity={1} />
+          <TouchableOpacity style={styles.overlay} onPress={closeMenuAsync} activeOpacity={1} />
 
           <Animated.View style={[styles.drawer, { right: slideAnim }]}>
             <SafeAreaView style={styles.drawerContent}>
