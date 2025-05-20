@@ -18,17 +18,17 @@ export default function UrlForm({ setIsLoading }: UrlFormProps) {
   const navigation = useNavigation();
 
   const onSubmit = async () => {
-    if (!isAuthenticated) {
-      navigation.navigate('Plans' as never);
-      return;
-    }
+    // if (!isAuthenticated) {
+    //   navigation.navigate('Plans' as never);
+    //   return;
+    // }
 
     setIsLoading(true);
 
     try {
       const result = await submitVideo(url);
       setVideoData(result);
-      navigation.navigate('Questions' as never);
+      navigation.navigate('questions' as never);
     } catch (err: any) {
       const msg = err?.response?.data?.detail;
 
