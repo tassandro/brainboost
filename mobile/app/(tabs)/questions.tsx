@@ -104,7 +104,7 @@ export default function Questions() {
             <TouchableOpacity style={styles.button} onPress={handleRestart}>
               <Text style={styles.buttonText}>Reiniciar</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => router.replace('/')}>
+            <TouchableOpacity style={styles.button} onPress={() => router.replace('/profile')}>
               <Text style={styles.buttonText}>Voltar</Text>
             </TouchableOpacity>
           </>
