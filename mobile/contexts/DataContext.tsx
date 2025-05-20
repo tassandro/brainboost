@@ -7,7 +7,7 @@ type Question = {
   pontuacao: number;
   alternatives: string[];
   correct_answer: string;
-  userAnswer?: string;
+  userAnswer?: string | null;
 };
 
 export type VideoData = {

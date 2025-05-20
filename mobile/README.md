@@ -49,5 +49,5 @@ Join our community of developers creating universal apps.
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
 
-## comando para utilizar o fastapi para não recusar o expo
+## comando para utilizar o fastapi para não recusar o expo na pasta backend
 uvicorn brainboost.main:app --host 0.0.0.0 --port 8000

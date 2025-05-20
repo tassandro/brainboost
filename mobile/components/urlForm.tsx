@@ -28,11 +28,22 @@ export default function UrlForm({ setIsLoading }: UrlFormProps) {
     try {
       const result = await submitVideo(url);
       setVideoData(result);
-      setIsLoading(false);
       navigation.navigate('Questions' as never);
     } catch (err: any) {
-      console.error('Erro ao processar vídeo:', err);
-      Alert.alert('Erro', 'Erro ao processar o vídeo. Verifique o link e tente novamente.');
+      const msg = err?.response?.data?.detail;
+
+      if (msg === 'Não foram geradas perguntas suficientes') {
+        Alert.alert(
+          'Vídeo inválido',
+          'Não foi possível gerar perguntas com esse vídeo. Tente outro link.'
+        );
+      } else {
+        if (__DEV__) {
+          console.warn('❌ Erro ao processar vídeo:', msg ?? err);
+        }
+        Alert.alert('Erro', 'Erro ao processar o vídeo. Verifique o link e tente novamente.');
+      }
+    } finally {
       setIsLoading(false);
     }
   };
@@ -51,7 +62,7 @@ export default function UrlForm({ setIsLoading }: UrlFormProps) {
           style={styles.input}
         />
         <TouchableOpacity style={styles.fab} onPress={() => onSubmit()}>
-          <Ionicons name="search" size={32} color="#fff" />
+          <Ionicons name="search" size={23} color="#fff" />
         </TouchableOpacity>
       </View>
     </View>
@@ -71,16 +82,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     borderWidth: 1,
     borderColor: '#ccc',
-    borderRadius: 12,
+    borderRadius: 20,
     backgroundColor: '#fff',
     color: '#333',
-    width: '83%',
+    width: '100%',
   },
   fab: {
     backgroundColor: '#537459',
     borderRadius: 32,
-    width: 50,
-    height: 50,
+    width: 35,
+    height: 35,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 6,
@@ -88,18 +99,18 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
+    position: 'absolute',
+    right: 20,
   },
   searchBar: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#fff',
-    borderRadius: 12,
     padding: 8,
     marginVertical: 16,
     width: '100%',
     paddingHorizontal: 16,
-    
+
   }
 });

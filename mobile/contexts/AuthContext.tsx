@@ -69,6 +69,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.error('Erro ao remover token:', err);
     }
   };
+  
+  useEffect(() => {
+    const interceptor = API.interceptors.response.use(
+      (res) => res,
+      (err) => {
+        if (err.response?.status === 401) {
+          console.warn('🔴 Token inválido ou expirado. Fazendo logout automático...');
+          logout();
+        }
+        return Promise.reject(err);
+      }
+    );
+
+    // Limpa o interceptor ao desmontar o contexto
+    return () => {
+      API.interceptors.response.eject(interceptor);
+    };
+  }, [token]);
 
   const isAuthenticated = !!token;
 

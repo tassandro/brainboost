@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '@cont/AuthContext';
 import { registerUser } from '@sv/authService';
 import { useRouter } from 'expo-router';
 
-import ArrowBack from '@img/arrowBack.svg';
+import BackIcon from '@img/arrowBack.svg';
 import BrainLogo from '@img/BrainLogo.svg';
+import AppScreen from '@comp/AppScreen';
 
 export default function Register() {
   const [fullName, setFullName] = useState('');
@@ -35,53 +36,63 @@ export default function Register() {
     }
   };
 
-  const goBack = () => {
-    navigation.goBack();
-  };
-
   return (
-    <View style={styles.container}>
-      <BrainLogo width={130} height={130} />
+    <AppScreen backgroundColor="#f9f9f9">
+      <View style={styles.container}>
+        <BrainLogo width={130} height={130} />
 
-      <View style={styles.card}>
-        {/* Botão de Voltar */}
-        <TouchableOpacity onPress={goBack} style={styles.backButton}>
-          <ArrowBack width={36} height={36} />
-        </TouchableOpacity>
+        <View style={styles.card}>
+          {/* Botão de Voltar */}
+          <TouchableOpacity
+            onPress={() => navigation.goBack()} // ou router.push('/home') se usar expo-router
+            style={{
+              position: 'absolute',
+              top: 75,
+              left: 30,
+              zIndex: 10,
+            }}
+          >
+            <BackIcon width={44} height={44} fill="#6b7280" />
+          </TouchableOpacity>
 
-        {/* Título */}
-        <Text style={styles.title}>Sign Up</Text>
-        <Text style={styles.subtitle}>Login details</Text>
+          {/* Título */}
+          <Text style={styles.title}>Sign Up</Text>
+          <Text style={styles.subtitle}>Login details</Text>
 
-        {/* Erro */}
-        {error ? <Text style={styles.errorText}>{error}</Text> : null}
+          {/* Erro */}
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
-        {/* Formulário */}
-        <TextInput
-          style={styles.input}
-          placeholder="Full Name"
-          value={fullName}
-          onChangeText={setFullName}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Username"
-          value={username}
-          onChangeText={setUsername}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
+          {/* Formulário */}
+          <TextInput
+            style={styles.input}
+            placeholder="Full Name"
+            value={fullName}
+            onChangeText={setFullName}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Username"
+            value={username}
+            onChangeText={setUsername}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
 
-        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>Sign Up</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>Sign Up</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </AppScreen>
   );
 }
 
@@ -91,18 +102,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 16,
+    // paddingHorizontal: 16,
   },
   card: {
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
     width: '100%',
     maxWidth: 400,
     borderRadius: 30,
-    padding: 20,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    elevation: 8,
+    padding: 30,
+    // shadowColor: '#000',
+    // shadowOpacity: 0.1,
+    // shadowRadius: 10,
+    // elevation: 8,
     position: 'relative',
   },
   backButton: {
@@ -129,6 +140,7 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     paddingHorizontal: 16,
     marginBottom: 12,
+    backgroundColor: '#fff',
   },
   button: {
     backgroundColor: '#537459e5',
@@ -137,6 +149,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 12,
+    elevation: 2,
+    width: '35%',
+    alignSelf: 'center',
+  },
+  button2: {
+    backgroundColor: '#ccc',
+    borderRadius: 999,
+    height: 48,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 12,
+    elevation: 2,
+    width: '40%',
+    alignSelf: 'center',
   },
   buttonText: {
     color: '#fff',

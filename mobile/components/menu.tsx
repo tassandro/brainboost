@@ -12,10 +12,21 @@ import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '@cont/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useData } from '@cont/DataContext';
+import { useRouter } from 'expo-router';
 
 const { width } = Dimensions.get('window');
 
-export default function FloatingMenu() {
+type FloatingMenuProps = {
+  position?: {
+    top?: number;
+    right?: number;
+    bottom?: number;
+    left?: number;
+  };
+};
+
+export default function FloatingMenu({ position }: FloatingMenuProps) {
   const [visible, setVisible] = useState(false);
   const [slideAnim] = useState(new Animated.Value(width));
   const navigation = useNavigation();
@@ -37,7 +48,7 @@ export default function FloatingMenu() {
       useNativeDriver: false,
     }).start(() => setVisible(false));
   };
-  
+
   const handleNavigate = (screen: string) => {
     Animated.timing(slideAnim, {
       toValue: width,
@@ -47,7 +58,7 @@ export default function FloatingMenu() {
       setVisible(false);
       setTimeout(() => {
         navigation.navigate(screen as never);
-      }, 0); // aguarda 1 frame para garantir desmontagem
+      }, 0);
     });
   };
 
@@ -57,34 +68,74 @@ export default function FloatingMenu() {
     navigation.navigate('home' as never);
   };
 
+  const { setVideoData } = useData();
+  const router = useRouter();
+
+  const iniciarSimulacao = () => {
+    setVideoData({
+      id_video: 'fake_video_id',
+      link_video: 'https://example.com/fake_video.mp4',
+      resumo_video: 'Esse é um resumo fictício de um vídeo de simulação para teste da lógica de perguntas e respostas.',
+      questions: [
+        {
+          id_question: 'q1',
+          texto_questao: 'Qual é a capital da França?',
+          alternatives: ['Berlim', 'Madri', 'Paris', 'Lisboa'],
+          correct_answer: 'Paris',
+          userAnswer: null,
+          pontuacao: 1,
+        },
+        {
+          id_question: 'q2',
+          texto_questao: 'Quanto é 5 x 6?',
+          alternatives: ['11', '30', '56', '60'],
+          correct_answer: '30',
+          userAnswer: null,
+          pontuacao: 1,
+        },
+        {
+          id_question: 'q3',
+          texto_questao: 'Quem escreveu "Dom Casmurro"?',
+          alternatives: ['Machado de Assis', 'Clarice Lispector', 'Carlos Drummond', 'Graciliano Ramos'],
+          correct_answer: 'Machado de Assis',
+          userAnswer: null,
+          pontuacao: 1,
+        },
+      ],
+    });
+
+    router.push('/questions');
+  };
+
   return (
     <>
-      <TouchableOpacity style={styles.fab} onPress={openMenu}>
+      <TouchableOpacity style={[styles.fab, position || styles.defaultPosition]} onPress={openMenu}>
         <Ionicons name="menu" size={32} color="#fff" />
       </TouchableOpacity>
 
       <Modal visible={visible} transparent animationType="none">
         <View style={styles.modalContainer}>
-          {/* Fundo semi-transparente clicável para fechar o menu */}
           <TouchableOpacity style={styles.overlay} onPress={closeMenu} activeOpacity={1} />
 
-          {/* Menu deslizante */}
           <Animated.View style={[styles.drawer, { right: slideAnim }]}>
             <SafeAreaView style={styles.drawerContent}>
-              <TouchableOpacity onPress={() => handleNavigate('home')}>
+              {/* <TouchableOpacity onPress={() => handleNavigate('home')}>
                 <Text style={styles.menuItem}>Home</Text>
-              </TouchableOpacity>
-              {/* 
-              <TouchableOpacity onPress={() => handleNavigate('about')}>
-                <Text style={styles.menuItem}>About</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleNavigate('contact')}>
-                <Text style={styles.menuItem}>Contact</Text>
-              </TouchableOpacity>
-              */}
+              </TouchableOpacity> */}
+
               {isAuthenticated && (
                 <TouchableOpacity onPress={() => handleNavigate('profile')}>
-                  <Text style={styles.menuItem}>Profile</Text>
+                  <Text style={styles.menuItem}>Edit Profile</Text>
+                </TouchableOpacity>
+              )}
+              {isAuthenticated && (
+                <TouchableOpacity onPress={() => handleNavigate('presentation')}>
+                  <Text style={styles.menuItem}>About</Text>
+                </TouchableOpacity>
+              )}
+              {isAuthenticated && (
+                <TouchableOpacity onPress={() => iniciarSimulacao()}>
+                  <Text style={styles.menuItem}>Questions</Text>
                 </TouchableOpacity>
               )}
               {isAuthenticated ? (
@@ -107,8 +158,6 @@ export default function FloatingMenu() {
 const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
-    bottom: 24,
-    left: 20,
     backgroundColor: '#537459',
     borderRadius: 32,
     width: 64,
@@ -121,6 +170,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
     zIndex: 1000,
+  },
+  defaultPosition: {
+    bottom: 24,
+    left: 20,
   },
   modalContainer: {
     flex: 1,
