@@ -51,7 +51,7 @@ export default function Login() {
         <View style={{ alignItems: 'center' }}>
 
           <TouchableOpacity
-            onPress={() => navigation.goBack()} // ou router.push('/home') se usar expo-router
+            onPress={() => navigation.navigate("presentation" as never)} // ou router.push('/home') se usar expo-router
             style={{
               position: 'absolute',
               top: 8,

@@ -1,7 +1,7 @@
 import { jwtDecode } from 'jwt-decode';
 import AsyncStorage from '@react-native-async-storage/async-storage'; //necessário, pois não existe localStorage no React Native
 import API from '@sv/api';
-import { User } from '@sv/userServices';
+// import { User } from '@sv/userServices';
 
 import React, { createContext, useContext, useState, useEffect, ReactNode, } from 'react';
 
@@ -60,35 +60,44 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const logout = async () => {
+  const logout = async (): Promise<void> => {
     try {
       await AsyncStorage.removeItem('token');
-      setToken(null);
-      setUser(null);
+
+      return new Promise((resolve) => {
+        setToken(null);
+        setUser(null);
+
+        // Garante que o contexto seja atualizado antes de seguir
+        setTimeout(() => {
+          resolve();
+        }, 0); // 0ms para empurrar ao próximo ciclo do event loop
+      });
     } catch (err) {
       console.error('Erro ao remover token:', err);
     }
   };
-  
+
   useEffect(() => {
     const interceptor = API.interceptors.response.use(
       (res) => res,
-      (err) => {
+      async (err) => {
         if (err.response?.status === 401) {
           console.warn('🔴 Token inválido ou expirado. Fazendo logout automático...');
-          logout();
+          await logout(); // aguarda antes de continuar
         }
         return Promise.reject(err);
       }
     );
 
-    // Limpa o interceptor ao desmontar o contexto
     return () => {
       API.interceptors.response.eject(interceptor);
     };
   }, [token]);
 
-  const isAuthenticated = !!token;
+  // const isAuthenticated = !!token;
+  const isAuthenticated = React.useMemo(() => !!token, [token]);
+
 
   return (
     <AuthContext.Provider
@@ -106,13 +115,13 @@ export const useAuth = () => {
   return context;
 };
 
-export async function verifyToken() {
-  try {
-    console.log("Verificando token...");
-    const res = await API.get<{ user: User }>("/verify-token");
-    return res.data.user;
-  } catch (err) {
-    console.error("Erro ao verificar token:", err);
-    throw new Error("Token inválido");
-  }
-}
+// export async function verifyToken() {
+//   try {
+//     console.log("Verificando token...");
+//     const res = await API.get<{ user: User }>("/verify-token");
+//     return res.data.user;
+//   } catch (err) {
+//     console.error("Erro ao verificar token:", err);
+//     throw new Error("Token inválido");
+//   }
+// }

@@ -1,28 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import AppScreen from '@comp/AppScreen';
 import { useAuth } from '@cont/AuthContext';
 import { useData } from '@cont/DataContext';
 import API from '@sv/api';
 import { useRouter } from 'expo-router';
+import { useFocusEffect } from '@react-navigation/native'; // ✅ Importado
 
 export default function Questions() {
   const { token, user } = useAuth();
   const { videoData } = useData();
   const router = useRouter();
-
-  const IS_SIMULATING = videoData?.id_video === 'fake_video_id';
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [finished, setFinished] = useState(false);
 
-  useEffect(() => {
-    if (!videoData) {
-      router.replace('/profile');
-    }
-  }, [videoData, router]);
+  // ✅ Substitui o useEffect pelo useFocusEffect
+  useFocusEffect(
+    useCallback(() => {
+      if (!videoData) {
+        router.replace('/profile');
+      } else {
+        // Resetar estado se usuário retornou do profile e começou um novo quiz
+        setCurrentIndex(0);
+        setSelectedAnswer(null);
+        setScore(0);
+        setFinished(false);
+      }
+    }, [videoData])
+  );
 
   const currentQuestion = videoData?.questions[currentIndex];
 
@@ -64,7 +71,6 @@ export default function Questions() {
 
     if (nextIndex >= videoData.questions.length) {
       await submitAnswers();
-      
       setFinished(true);
     } else {
       setCurrentIndex(nextIndex);

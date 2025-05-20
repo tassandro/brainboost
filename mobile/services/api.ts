@@ -15,16 +15,6 @@ API.interceptors.request.use(async (config) => {
   if (token && config.headers) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-
-  //  Alert.alert(
-  //   '🔵 API REQUEST',
-  //   [
-  //     `🔹 METHOD: ${config.method?.toUpperCase()}`,
-  //     `🔹 URL: ${config.baseURL ?? ''}${config.url ?? ''}`,
-  //     `🔹 HEADERS: ${JSON.stringify(config.headers, null, 2)}`,
-  //     `🔹 BODY: ${typeof config.data === 'string' ? config.data : JSON.stringify(config.data, null, 2)}`
-  //   ].join('\n\n')
-  // ); 
   const baseURL = config.baseURL ?? '';
   const url = config.url ?? '';
   console.log('[API REQUEST]', config.method?.toUpperCase(), baseURL + url);

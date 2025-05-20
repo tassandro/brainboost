@@ -73,6 +73,7 @@ export default function FloatingMenu({ position }: FloatingMenuProps) {
     await logout();             // aguarda logout
     console.log('Logout realizado');
     console.log('Redirecionando para login...');
+    // await new Promise((resolve) => setTimeout(resolve, 1000)); // espera 100ms
     router.replace("/login");  // só então navega
     console.log('Redirecionamento completo');
   };

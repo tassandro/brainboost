@@ -1,6 +1,7 @@
-import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, StyleSheet, Keyboard } from 'react-native';
 import LottieView from 'lottie-react-native';
+
 
 
 type WaitingProps = {
@@ -8,12 +9,18 @@ type WaitingProps = {
 };
 
 export default function Waiting({ isLoading }: WaitingProps) {
+  useEffect(() => {
+    if (isLoading) {
+      Keyboard.dismiss(); // ✅ Fecha o teclado quando começa o loading
+    }
+  }, [isLoading]);
+
   if (!isLoading) return null;
 
   return (
     <View style={styles.container}>
       <LottieView
-        source={require('@img/waitup.gif')} // precisa converter o gif para lottie
+        source={require('@img/clock-loading.json')} // precisa converter o gif para lottie
         autoPlay
         loop
         style={{ width: 120, height: 120 }}

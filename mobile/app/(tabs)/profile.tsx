@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback, useState } from 'react';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import AppScreen from '@comp/AppScreen';
 import FloatingMenu from '@comp/menu';
 import UrlForm from '@comp/urlForm';
@@ -19,10 +20,18 @@ export default function Profile() {
   const [history, setHistory] = useState<VideoData[]>([]);
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [expandedItems, setExpandedItems] = useState<string[]>([]);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
+  const toggleExpand = (id: string) => {
+    setExpandedItems((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
+
+  useFocusEffect(
+    useCallback(() => {
       const fetchHistory = async () => {
+        setLoading(true);
         try {
           const res = await API.get<VideoData[]>('/profile');
           setHistory(res.data);
@@ -37,13 +46,13 @@ export default function Profile() {
         }
       };
 
-      fetchHistory();
-    }, 1000);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
+      const timer = setTimeout(() => {
+        fetchHistory();
+      }, 1000);
 
+      return () => clearTimeout(timer);
+    }, [])
+  );
 
   return (
     <AppScreen backgroundColor="#f9f9f9">
@@ -61,14 +70,28 @@ export default function Profile() {
           data={history}
           keyExtractor={(item) => item.id_video}
           contentContainerStyle={styles.listContent}
-          renderItem={({ item }) => (
-            <View style={styles.card}>
-              <Text style={styles.link}>{item.link_video}</Text>
-              <Text style={styles.subtitle}>Resumo</Text>
-              <Text style={styles.description}>{item.resumo_video}</Text>
-              <Text style={styles.score}>Score: {item.score}</Text>
-            </View>
-          )}
+          renderItem={({ item }) => {
+            const isExpanded = expandedItems.includes(item.id_video);
+            return (
+              <TouchableOpacity
+                onPress={() => toggleExpand(item.id_video)}
+                style={styles.card}
+                activeOpacity={0.9}
+              >
+                <Text style={styles.link}>
+                  {item.link_video} {isExpanded ? '▲' : '▼'}
+                </Text>
+
+                {isExpanded && (
+                  <>
+                    <Text style={styles.subtitle}>Resumo</Text>
+                    <Text style={styles.description}>{item.resumo_video}</Text>
+                    <Text style={styles.score}>Score: {item.score}</Text>
+                  </>
+                )}
+              </TouchableOpacity>
+            );
+          }}
           ListEmptyComponent={
             !loading ? (
               <Text style={styles.emptyText}>Nenhum vídeo disponível</Text>
@@ -85,7 +108,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     marginTop: 16,
-    top: "10%",
+    top: '10%',
   },
   title: {
     fontSize: 22,
@@ -101,20 +124,22 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 16,
     marginBottom: 12,
-    elevation: 2, // sombra no Android
-    shadowColor: '#000', // sombra no iOS
+    elevation: 2,
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
   link: {
-    fontSize: 12,
-    color: '#666',
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#007acc',
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 16,
     fontWeight: '600',
+    marginTop: 8,
     marginBottom: 4,
   },
   description: {
