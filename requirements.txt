@@ -6,6 +6,6 @@ python-jose
 python-multipart
 python-decouple
 nanoid
-youtube_transcript_api
+yt_dlp
 openai==0.28
 utils

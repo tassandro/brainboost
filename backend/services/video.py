@@ -3,7 +3,9 @@ import openai
 from sqlalchemy.orm import Session
 from models.models import Video, Question
 from typing import List
-from youtube_transcript_api import YouTubeTranscriptApi, TranscriptsDisabled
+import yt_dlp
+import requests
+import re
 from dotenv import load_dotenv
 import os
 import json 
@@ -14,21 +16,127 @@ def generate_unique_id():
 
 load_dotenv()
 
-
 openai.api_key = os.getenv("OPENAI_API_KEY")  
+
+def extrair_texto_legenda(video_url, lang_preferidas=['pt', 'pt-BR', 'en']):
+    ydl_opts = {
+        'writesubtitles': True,
+        'writeautomaticsub': True,
+        'subtitleslangs': lang_preferidas,
+        'skip_download': True,
+    }
+
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        try:
+            info = ydl.extract_info(video_url, download=False)
+        except Exception as e:
+            print(f"Erro ao extrair info: {e}")
+            return None
+
+    # Tenta pegar legenda manual primeiro
+    subs = info.get('subtitles', {})
+    auto_subs = info.get('automatic_captions', {})
+
+    
+    def buscar_url_legenda(subs_dict):
+        for lang in lang_preferidas:
+            if lang in subs_dict:
+                return subs_dict[lang][0]['url']
+        return None
+
+    url_legenda = buscar_url_legenda(subs) or buscar_url_legenda(auto_subs)
+    if not url_legenda:
+        print("Legenda não disponível nos idiomas preferidos")
+        return None
+
+    resp = requests.get(url_legenda)
+    if resp.status_code != 200:
+        print("Erro ao baixar legenda")
+        return None
+
+    conteudo_legenda = resp.text
+
+    linhas = []
+    for linha in conteudo_legenda.splitlines():
+        if re.match(r'^\d\d:\d\d:\d\d\.\d+ --> \d\d:\d\d:\d\d\.\d+', linha):
+            continue
+        if linha.strip() == '' or linha.startswith('WEBVTT') or linha.isdigit():
+            continue
+        linhas.append(linha.strip())
+
+    texto_legenda = " ".join(linhas)
+    return texto_legenda
+
+def extrair_texto_do_json(json_data):
+    if isinstance(json_data, str):
+        try:
+            data = json.loads(json_data)
+        except json.JSONDecodeError as e:
+            print(f"Erro ao fazer parse do JSON: {e}")
+            return None
+    else:
+        data = json_data
+    
+    texto_completo = []
+    
+    # Verificar se existe a estrutura esperada
+    if "events" not in data:
+        print("Estrutura 'events' não encontrada no JSON")
+        return None
+    
+    # Processar cada evento
+    for event in data["events"]:
+        if "segs" in event:  # segs = segments (segmentos de texto)
+            segmento_texto = []
+            
+            for seg in event["segs"]:
+                if "utf8" in seg:
+                    texto = seg["utf8"]
+                    if texto:
+                        segmento_texto.append(texto)
+            
+            # Juntar segmentos do mesmo evento
+            if segmento_texto:
+                texto_completo.append("".join(segmento_texto))
+    
+    # Juntar todos os textos com espaço
+    resultado = " ".join(texto_completo)
+    
+    # Limpeza final
+    resultado = re.sub(r'\s+', ' ', resultado)  # Remover espaços múltiplos
+    resultado = resultado.strip()
+    
+    return resultado
+
+def extract_video_id(video_link: str) -> str:
+    patterns = [
+        r"(?:v=)([a-zA-Z0-9_-]{11})",          
+        r"(?:youtu\.be/)([a-zA-Z0-9_-]{11})"
+    ]
+    
+    for pattern in patterns:
+        match = re.search(pattern, video_link)
+        if match:
+            return match.group(1)
+    
+    raise Exception(f"Não foi possível extrair o ID do vídeo do link: {video_link}")
+
 
 # Função para obter a transcrição do vídeo usando o YouTubeTranscriptApi
 def get_video_transcription(video_link: str, language_code: str = 'pt') -> str:
     try:
-        video_id = video_link.split("v=")[-1]  
-        transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=[language_code])  
-        
-        
-        transcript_text = " ".join([entry["text"] for entry in transcript])
-        return transcript_text
+        legenda_json_str = extrair_texto_legenda(video_link, lang_preferidas=[language_code])
 
-    except TranscriptsDisabled:
-        raise Exception(f"Transcrição não disponível para o vídeo: {video_link}")
+        if not legenda_json_str:
+            raise Exception("Legenda não encontrada ou erro na extração.")
+
+        texto_extraido = extrair_texto_do_json(legenda_json_str)
+
+        if not texto_extraido:
+            raise Exception("Erro ao processar legenda JSON.")
+
+        return texto_extraido
+
     except Exception as e:
         raise Exception(f"Erro ao recuperar transcrição: {str(e)}")
     
