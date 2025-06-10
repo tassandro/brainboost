@@ -19,6 +19,7 @@ nanoid = "^2.0.0"
 openai = "0.28"
 utils = "^1.0.2"
 python-dotenv = "^1.1.0"
+yt-dlp = "^2025.6.9"
 
 
 [build-system]

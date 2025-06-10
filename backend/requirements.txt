@@ -9,3 +9,4 @@ nanoid
 youtube_transcript_api
 openai==0.28
 utils
+yt_dlp
