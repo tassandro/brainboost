@@ -1,5 +1,6 @@
 import { createContext, useState, useContext, ReactNode } from 'react';
 
+// Response da api quando solicitado pelo /video
 type Question = {
   id_question: string;
   texto_questao: string;
@@ -25,7 +26,7 @@ const VideoContext = createContext<VideoContextType | undefined>(undefined);
 
 export function DataProvider({ children }: { children: ReactNode }) {
   const [videoData, setVideoData] = useState<VideoData | null>(null);
-
+  
   return (
     <VideoContext.Provider value={{ videoData, setVideoData }}>
       {children}

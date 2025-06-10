@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 import os
 import json 
 import uuid
+import re
 
 def generate_unique_id():
     return uuid.uuid4().hex[:10]  
