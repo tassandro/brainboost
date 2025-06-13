@@ -68,15 +68,85 @@ Após a inicialização, os serviços estarão disponíveis nos seguintes endere
 Certifique-se de criar um arquivo `.env` na raiz do projeto com as seguintes variáveis:
 
 ```ini
-SECRET_KEY="insira_sua_chave"
-ALGORITHM="HS256"
+SECRET_KEY='insira_sua_chave'
+ALGORITHM='HS256'
 ACCESS_TOKEN_EXPIRE_MINUTES=30
-OPENAI_API_KEY="insira_sua_chave"
+OPENAI_API_KEY='insira_sua_chave'
 ```
 
 ### Descrição das Variáveis:
 
-- **SECRET_KEY**: Chave secreta usada para assinar tokens JWT.
+- **SECRET_KEY**: Chave secreta usada para assinar tokens JWT. Você pode escolher.
 - **ALGORITHM**: Algoritmo utilizado na autenticação JWT.
 - **ACCESS_TOKEN_EXPIRE_MINUTES**: Tempo de expiração do token de acesso em minutos.
 - **OPENAI_API_KEY**: Chave de API para integração com o OpenAI GPT-4.
+
+
+## 📱 App Mobile com Expo
+
+A versão mobile do **BrainBoost** foi desenvolvida utilizando **React Native** com **Expo**, proporcionando uma experiência fluida e otimizada em dispositivos móveis.
+
+### 🔧 Pré-requisitos
+
+Antes de iniciar, certifique-se de ter os seguintes itens instalados:
+
+- **Node.js**  
+- **Expo CLI**:  
+  ```bash
+  npm install -g expo-cli
+````
+
+### 📦 Instalação e Configuração
+
+1. Acesse o diretório do app mobile:
+
+   ```bash
+   cd mobile
+   ```
+
+2. Instale as dependências:
+
+   ```bash
+   npm install
+   ```
+
+3. Localize o arquivo `mobile/services/api.ts` e substitua `<seu_ipv4>` pelo **IP local da sua máquina**.
+   Para descobrir seu IP local, execute o comando:
+
+   * No Windows:
+
+     ```bash
+     ipconfig
+     ```
+   * No macOS/Linux:
+
+     ```bash
+     ifconfig
+     ```
+
+   Exemplo de configuração:
+
+   ```ts
+   const API = axios.create({
+     baseURL: 'http://192.168.0.100:8080',
+   });
+   ```
+
+4. Certifique-se de que **seu computador e seu celular estejam conectados à mesma rede Wi-Fi**.
+
+### ▶️ Executando o App
+
+Para iniciar o aplicativo:
+
+```bash
+npx expo start
+```
+
+Isso abrirá o painel do Expo no navegador. A partir dele, você pode:
+
+* Escanear o QR Code com o app **Expo Go** no seu celular (disponível na App Store e Google Play).
+* Rodar em um emulador, se preferir testar no ambiente local.
+
+```
+```
+
