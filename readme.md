@@ -94,7 +94,7 @@ Antes de iniciar, certifique-se de ter os seguintes itens instalados:
 - **Expo CLI**:  
   ```bash
   npm install -g expo-cli
-````
+``
 
 ### 📦 Instalação e Configuração
 
