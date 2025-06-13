@@ -92,9 +92,9 @@ Antes de iniciar, certifique-se de ter os seguintes itens instalados:
 
 - **Node.js**  
 - **Expo CLI**:  
-  ```bash
+```bash
   npm install -g expo-cli
-``
+```
 
 ### 📦 Instalação e Configuração
 
@@ -146,7 +146,4 @@ Isso abrirá o painel do Expo no navegador. A partir dele, você pode:
 
 * Escanear o QR Code com o app **Expo Go** no seu celular (disponível na App Store e Google Play).
 * Rodar em um emulador, se preferir testar no ambiente local.
-
-```
-```
 
